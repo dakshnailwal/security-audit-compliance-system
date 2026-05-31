@@ -52,23 +52,23 @@ def evaluate_audit(controls, responses, org_info):
         2
     )
 
-    if compliance_percentage >= 95:
-        compliance_status = "Fully Compliant"
+    if compliance_percentage >= 91:
+        compliance_status = "Excellent Compliance"
 
-    elif compliance_percentage >= 85:
-        compliance_status = "Highly Compliant"
+    elif compliance_percentage >= 81:
+        compliance_status = "Strong Compliance"
 
-    elif compliance_percentage >= 70:
-        compliance_status = "Moderately Compliant"
+    elif compliance_percentage >= 61:
+        compliance_status = "Moderate Compliance"
 
-    elif compliance_percentage >= 50:
-        compliance_status = "Partially Compliant"
+    elif compliance_percentage >= 41:
+        compliance_status = "Needs Improvement"
 
-    elif compliance_percentage >= 25:
-        compliance_status = "Low Compliance"
+    elif compliance_percentage >= 21:
+        compliance_status = "High Risk"
 
     else:
-        compliance_status = "Critical Compliance Gaps"
+        compliance_status = "Critical Risk"
 
     category_summary = {}
 
