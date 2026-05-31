@@ -114,9 +114,58 @@
     </a>
 
 </div>
-```
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<script>
+
+const complianceScore =
+    {{ result.compliance_percentage }};
+
+const ctx =
+    document
+        .getElementById("complianceGauge")
+        .getContext("2d");
+
+new Chart(ctx, {
+
+    type: "doughnut",
+
+    data: {
+
+        datasets: [{
+
+            data: [
+                complianceScore,
+                100 - complianceScore
+            ],
+
+            backgroundColor: [
+                "#2563eb",
+                "#e5e7eb"
+            ],
+
+            borderWidth: 0
+
+        }]
+    },
+
+    options: {
+
+        responsive: true,
+
+        cutout: "75%",
+
+        plugins: {
+
+            legend: {
+                display: false
+            }
+        }
+    }
+});
+
+</script>
 </body>
 </html>
 </div>
