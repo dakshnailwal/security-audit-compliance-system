@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit Report</title>
+
+```
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+```
+
+</head>
+<body>
+
+<div class="container">
+
+```
+<h1>Security Audit & Compliance Report</h1>
+
+<div class="card">
+
+    <h2>Organization Details</h2>
+
+    <p><strong>Organization:</strong> {{ result.organization.organization_name }}</p>
+    <p><strong>Industry:</strong> {{ result.organization.industry }}</p>
+    <p><strong>Employees:</strong> {{ result.organization.employee_count }}</p>
+    <p><strong>Auditor:</strong> {{ result.organization.auditor_name }}</p>
+
+</div>
+
+<div class="card">
+
+    <h2>Audit Statistics</h2>
+
+    <p><strong>Total Controls Assessed:</strong> {{ result.total_controls }}</p>
+    <p><strong>Compliant Controls:</strong> {{ result.compliant_controls }}</p>
+    <p><strong>Non-Compliant Controls:</strong> {{ result.non_compliant_controls }}</p>
+    <p><strong>Compliance Percentage:</strong> {{ result.compliance_percentage }}%</p>
+    <p><strong>Compliance Status:</strong> {{ result.compliance_status }}</p>
+
+</div>
+
+<div class="card">
+
+    <h2>Category Compliance Summary</h2>
+
+    {% for category, percentage in result.category_summary.items() %}
+
+        <p>
+            <strong>{{ category }}</strong>
+            - {{ percentage }}%
+        </p>
+
+        <progress
+            value="{{ percentage }}"
+            max="100"
+            style="width:100%; height:25px;">
+        </progress>
+
+        <br><br>
+
+    {% endfor %}
+
+</div>
+
+<div class="card">
+
+   <div class="card">
+
+```
+<h2>Audit Findings</h2>
+
+{% if result.findings %}
+
+    {% set categories = [
+        "Access Control",
+        "Network Security",
+        "Data Protection",
+        "Incident Response",
+        "Compliance & Governance",
+        "Asset Management"
+    ] %}
+
+    {% for category in categories %}
+
+        {% set category_findings = result.findings
+            | selectattr("category", "equalto", category)
+            | list %}
+
+        {% if category_findings %}
+
+            <div style="
+                margin-top:30px;
+                margin-bottom:20px;
+                padding-bottom:10px;
+                border-bottom:2px solid #e5e7eb;">
+
+                <h3 style="
+    margin:0;
+    color:#334155;
+    font-size:22px;">
+
+    {{ category }}
+
+    <span style="
+        color:#64748b;
+        font-size:16px;
+        font-weight:500;">
+
+        ({{ category_findings|length }} Findings)
+
+    </span>
+
+</h3>
+
+            </div>
+
+            {% for finding in category_findings %}
+
+            <div style="
+                border:1px solid #ddd;
+                padding:15px;
+                margin-bottom:15px;
+                border-radius:8px;">
+
+                <p>
+                    <strong>Control ID:</strong>
+                    {{ finding.control_id }}
+                </p>
+
+                <p>
+                    <strong>Finding:</strong>
+                    {{ finding.finding }}
+                </p>
+
+                <p>
+                    <strong>Impact:</strong>
+                    {{ finding.impact }}
+                </p>
+
+                <p>
+                    <strong>Recommendation:</strong>
+                    {{ finding.recommendation }}
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endfor %}
+
+{% else %}
+
+    <p>No audit findings identified.</p>
+
+{% endif %}
+```
+
+</div>
+
+
+</div>
+
+<div class="card">
+
+    <h2>Generated PDF Report</h2>
+
+    {% if result.report_filename %}
+
+        <p>
+            Audit report generated successfully.
+        </p>
+
+        <a
+            href="{{ url_for('download_report', filename=result.report_filename) }}"
+            class="btn">
+
+            Download PDF Report
+
+        </a>
+
+    {% else %}
+
+        <p>No PDF report generated.</p>
+
+    {% endif %}
+
+</div>
+
+<div class="button-group">
+
+    <a href="{{ url_for('dashboard') }}" class="btn">
+        Back to Dashboard
+    </a>
+
+    <a href="{{ url_for('audit') }}" class="btn">
+        Start New Audit
+    </a>
+
+</div>
+```
+
+</div>
+
+</body>
+</html>
